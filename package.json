@@ -1,0 +1,20 @@
+{
+  "name": "networktest",
+  "version": "1.0.0",
+  "description": "a simple network test application",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Mighty Eagle",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "network-speed": "^2.1.1",
+    "ping": "^0.4.1",
+    "socket.io": "^4.4.0"
+  }
+}
