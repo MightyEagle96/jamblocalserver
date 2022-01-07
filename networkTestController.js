@@ -12,7 +12,7 @@ export const PacketsCount = (req, res) => {
   } else {
     networkedComputers.push({
       ipAddress: req.body.ipAddress,
-      recievedPackets: 1,
+      ackPackets: 1,
     });
   }
 
@@ -21,4 +21,13 @@ export const PacketsCount = (req, res) => {
 
 export const ViewProgress = (req, res) => {
   res.json({ networkedComputers });
+};
+
+export const GetMyReport = (req, res) => {
+  const index = networkedComputers.findIndex(
+    (d) => d.ipAddress === req.body.ipAddress
+  );
+
+  const computer = networkedComputers[index];
+  res.json({ computer });
 };

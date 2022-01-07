@@ -1,5 +1,9 @@
 import express from "express";
-import { PacketsCount, ViewProgress } from "./networkTestController.js";
+import {
+  GetMyReport,
+  PacketsCount,
+  ViewProgress,
+} from "./networkTestController.js";
 import { isConnectedToServer } from "./realTimeController.js";
 import {
   ApplicationClosed,
@@ -25,6 +29,7 @@ router
   .get("/connectedDevices", connectedDevices)
   .post("/networkTest", performNetworkTest)
   .get("/networkTest", viewNetworkTest)
+  .get("/getMyTestResult", GetMyReport)
   .post("/packetsCount", PacketsCount)
   .get("/viewProgress", ViewProgress)
   .post("/testUpload", networkUpload)
