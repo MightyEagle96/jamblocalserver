@@ -8,7 +8,7 @@ export const PacketsCount = (req, res) => {
   );
 
   if (index >= 0) {
-    networkedComputers[index].recievedPackets++;
+    networkedComputers[index].ackPackets++;
   } else {
     networkedComputers.push({
       ipAddress: req.body.ipAddress,

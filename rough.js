@@ -1,4 +1,5 @@
-let count = 0;
-setInterval(() => {
-  console.log((count += 1));
-}, 5000);
+const friends = [{ name: "Eagle", count: 2 }];
+
+friends.find((d) => d.count++);
+
+console.log(friends);
