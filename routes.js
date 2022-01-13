@@ -1,22 +1,20 @@
 import express from "express";
-import {
-  GetMyReport,
-  PacketsCount,
-  ViewProgress,
-} from "./networkTestController.js";
+
 import { isConnectedToServer } from "./realTimeController.js";
 import {
   ApplicationClosed,
-  beginExamination,
   connectedDevices,
   connectionStatus,
+  ConnectToCentralServer,
   connectToServer,
+  GetCenterDetails,
   GetExaminationStatus,
   makeBackup,
-  networkDownload,
-  networkUpload,
   performNetworkTest,
   viewNetworkTest,
+  GetMyReport,
+  PacketsCount,
+  ViewProgress,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -32,13 +30,12 @@ router
   .post("/getMyTestResult", GetMyReport)
   .post("/packetsCount", PacketsCount)
   .get("/viewProgress", ViewProgress)
-  .post("/testUpload", networkUpload)
-  .get("/testDownload", networkDownload)
   .get("/serverConnected", isConnectedToServer)
   .post("/makeBackup", makeBackup)
   .post("/connectionStatus", connectionStatus)
-  .post("/beginExamination", beginExamination)
   .get("/examinationStatus", GetExaminationStatus)
-  .post("/applicationClosed", ApplicationClosed);
+  .post("/applicationClosed", ApplicationClosed)
+  .post("/connectToCentralServer", ConnectToCentralServer)
+  .get("/centerDetails", GetCenterDetails);
 
 export default router;
