@@ -24,9 +24,9 @@ export const GetCenterDetails = (req, res) => {
 export const performNetworkTest = (req, res) => {
   networkTest.isActive = !networkTest.isActive;
   networkTest.duration = req.body.duration;
-  networkTest.beganAt = new Date();
+  networkTest.timeStarted = new Date().toTimeString();
   res.json({ message: "Network test started", networkTest });
-  //StopTheTimer();
+  StopTheTimer();
 };
 
 function StopTheTimer() {
@@ -37,7 +37,7 @@ function StopTheTimer() {
     const currentTime = new Date();
     if (timeBegan.toTimeString() === currentTime.toTimeString()) {
       clearInterval(timer);
-      networkTest.stoppedAt = currentTime;
+      networkTest.timeStopped = currentTime.toTimeString();
       networkTest.isActive = false;
     }
   }, 1000);
@@ -197,3 +197,25 @@ function ReverseShutdown() {
     shutDown = !shutDown;
   }, 10000);
 }
+
+export const UploadTestResult = (req, res) => {
+  let performance = 0;
+  networkedComputers.forEach((nc) => {
+    performance += nc.percentage;
+  });
+  const testReport = {
+    center: centerDetails._id,
+    connectedComputers,
+    dateConducted: new Date().toDateString(),
+    networkTestDuration: networkTest.duration,
+    timeStarted: networkTest.timeStarted,
+    timeStopped: networkTest.timeStopped,
+    overallTestPerformance: (performance / networkedComputers.length).toFixed(
+      2
+    ),
+  };
+
+  res.json({ testReport });
+  networkedComputers = [];
+  networkTest = { isActive: false, duration: 0 };
+};

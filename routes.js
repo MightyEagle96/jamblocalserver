@@ -16,6 +16,7 @@ import {
   ViewProgress,
   isConnectedToServer,
   ShutDownApplication,
+  UploadTestResult,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -38,6 +39,7 @@ router
   .post("/applicationClosed", ApplicationClosed)
   .post("/connectToCentralServer", ConnectToCentralServer)
   .post("/shutDownApplication", ShutDownApplication)
-  .get("/centerDetails", GetCenterDetails);
+  .get("/centerDetails", GetCenterDetails)
+  .get("/fetchTestResult", UploadTestResult);
 
 export default router;
