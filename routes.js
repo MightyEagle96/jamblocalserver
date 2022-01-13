@@ -1,6 +1,5 @@
 import express from "express";
 
-import { isConnectedToServer } from "./realTimeController.js";
 import {
   ApplicationClosed,
   connectedDevices,
@@ -15,6 +14,8 @@ import {
   GetMyReport,
   PacketsCount,
   ViewProgress,
+  isConnectedToServer,
+  ShutDownApplication,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -36,6 +37,7 @@ router
   .get("/examinationStatus", GetExaminationStatus)
   .post("/applicationClosed", ApplicationClosed)
   .post("/connectToCentralServer", ConnectToCentralServer)
+  .post("/shutDownApplication", ShutDownApplication)
   .get("/centerDetails", GetCenterDetails);
 
 export default router;

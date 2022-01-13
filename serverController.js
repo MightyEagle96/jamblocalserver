@@ -1,22 +1,20 @@
-import NetworkSpeedCheck from "network-speed";
 import ping from "ping";
 
-const connectedComputers = [];
+let connectedComputers = [];
 
 let centerDetails = null;
+let shutDown = false;
 let timer = 0;
 let beginExam = { mainExamination: false, networkTest: false, duration: 0 };
-const networkedComputers = [];
+let networkedComputers = [];
 
 let networkTest = { isActive: false, duration: 0 };
 
-const networkSpeed = new NetworkSpeedCheck();
-const baseUrl = "http://localhost:4000";
-const fileSizeInBytes = 50000;
-
 export const ConnectToCentralServer = (req, res) => {
   centerDetails = req.body;
-  res.status(201).json({ message: "Welcome" });
+  res
+    .status(201)
+    .json({ message: "Local Server is now connected to the central server." });
 };
 
 export const GetCenterDetails = (req, res) => {
@@ -28,7 +26,7 @@ export const performNetworkTest = (req, res) => {
   networkTest.duration = req.body.duration;
   networkTest.beganAt = new Date();
   res.json({ message: "Network test started", networkTest });
-  StopTheTimer();
+  //StopTheTimer();
 };
 
 function StopTheTimer() {
@@ -144,16 +142,20 @@ export const ApplicationClosed = (req, res) => {
 //what we want here is the IP Address and the number of packets recieved
 
 export const PacketsCount = (req, res) => {
-  console.log(networkTest);
   const index = networkedComputers.findIndex(
     (d) => d.ipAddress === req.body.ipAddress
   );
-
   if (index >= 0) {
-    networkedComputers[index].ackPackets++;
-    networkedComputers[index].percentage = Math.floor(
-      (networkedComputers[index].ackPackets / networkTest.duration) * 100
-    );
+    console.log(networkedComputers[index]);
+    if (networkedComputers[index].ackPackets < networkTest.duration) {
+      console.log("Something is up here");
+      networkedComputers[index].ackPackets = networkedComputers[
+        index
+      ].ackPackets += 1;
+      networkedComputers[index].percentage = Math.floor(
+        (networkedComputers[index].ackPackets / networkTest.duration) * 100
+      );
+    }
   } else {
     networkedComputers.push({
       ipAddress: req.body.ipAddress,
@@ -177,3 +179,21 @@ export const GetMyReport = (req, res) => {
   const computer = networkedComputers[index];
   res.json({ computer });
 };
+
+export const ShutDownApplication = (req, res) => {
+  shutDown = !shutDown;
+  connectedComputers = [];
+  networkedComputers = [];
+  res.json({ shutDown });
+  ReverseShutdown();
+};
+
+export const isConnectedToServer = (req, res) => {
+  res.json({ connected: true, shutDown });
+};
+
+function ReverseShutdown() {
+  setTimeout(() => {
+    shutDown = !shutDown;
+  }, 10000);
+}
