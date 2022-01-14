@@ -91,7 +91,6 @@ export const makeBackup = (req, res) => {
   const index = connectedComputers.findIndex(
     (d) => d.ipAddress === req.body.ipAddress
   );
-  console.log(index);
 
   if (index >= 0) {
     connectedComputers[index].isBackup = true;
@@ -146,9 +145,7 @@ export const PacketsCount = (req, res) => {
     (d) => d.ipAddress === req.body.ipAddress
   );
   if (index >= 0) {
-    console.log(networkedComputers[index]);
     if (networkedComputers[index].ackPackets < networkTest.duration) {
-      console.log("Something is up here");
       networkedComputers[index].ackPackets = networkedComputers[
         index
       ].ackPackets += 1;
