@@ -8,10 +8,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({ origin: originUrl, credentials: true }));
-app.use(morgan("dev"));
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 app.use("/", router);
 
 app.listen(5000, () => {
-  console.log("App is listening");
+  console.log("Jamb Local Server is listening");
 });
