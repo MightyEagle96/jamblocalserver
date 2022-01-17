@@ -165,7 +165,16 @@ export const PacketsCount = (req, res) => {
 };
 
 export const ViewProgress = (req, res) => {
-  res.json({ networkedComputers });
+  res.json({
+    networkedComputers: networkedComputers.sort((a, b) => {
+      let fa = a.ipAddress,
+        fb = b.ipAddress;
+
+      if (fa < fb) return -1;
+      if (fa > fb) return 1;
+      return 0;
+    }),
+  });
 };
 
 export const GetMyReport = (req, res) => {
