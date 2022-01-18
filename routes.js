@@ -17,15 +17,20 @@ import {
   isConnectedToServer,
   ShutDownApplication,
   UploadTestResult,
+  CentralServerMiddleWare,
 } from "./serverController.js";
 
 const router = express.Router();
 
 router
+
   .get("/", (req, res) => {
     res.json({ message: "Hello from this side" });
   })
-  .post("/test", connectToServer)
+  .post("/connectToCentralServer", ConnectToCentralServer)
+  .get("/centerDetails", GetCenterDetails)
+  .use(CentralServerMiddleWare)
+  .post("/connectToServer", connectToServer)
   .get("/connectedDevices", connectedDevices)
   .post("/networkTest", performNetworkTest)
   .get("/networkTest", viewNetworkTest)
@@ -37,9 +42,8 @@ router
   .post("/connectionStatus", connectionStatus)
   .get("/examinationStatus", GetExaminationStatus)
   .post("/applicationClosed", ApplicationClosed)
-  .post("/connectToCentralServer", ConnectToCentralServer)
   .post("/shutDownApplication", ShutDownApplication)
-  .get("/centerDetails", GetCenterDetails)
+
   .get("/fetchTestResult", UploadTestResult);
 
 export default router;

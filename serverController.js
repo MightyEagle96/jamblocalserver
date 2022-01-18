@@ -1,7 +1,6 @@
 import ping from "ping";
 
 let connectedComputers = [];
-
 let centerDetails = null;
 let shutDown = false;
 let timer = 0;
@@ -15,6 +14,14 @@ export const ConnectToCentralServer = (req, res) => {
   res
     .status(201)
     .json({ message: "Local Server is now connected to the central server." });
+};
+
+export const CentralServerMiddleWare = (req, res, next) => {
+  if (centerDetails === null) {
+    res.status(403).json({
+      message: "Local Server is not connected to the central server.",
+    });
+  } else next();
 };
 
 export const GetCenterDetails = (req, res) => {
@@ -54,12 +61,7 @@ export const viewNetworkTest = (req, res) => {
 
 export const connectToServer = (req, res) => {
   //do this to prevent computers being connected when the local server is not yet connected to the main server
-  if (centerDetails === null) {
-    return res.status(403).json({
-      message:
-        "The Local Server is not linked up with the central Jamb server.",
-    });
-  }
+
   req.body.isBackup = false;
   req.body.connectionStatus = "connected";
   req.body.appClosed = false;
