@@ -65,6 +65,7 @@ export const connectToServer = (req, res) => {
   req.body.isBackup = false;
   req.body.connectionStatus = "connected";
   req.body.appClosed = false;
+
   const index = connectedComputers.findIndex((c) => {
     return c.ipAddress == req.body.ipAddress;
   });
@@ -118,7 +119,11 @@ function GetConnectionStatus() {
       ping.sys.probe(connectedComputers[i].ipAddress, function (isAlive) {
         if (isAlive) {
           connectedComputers[i].connectionStatus = "connected";
-        } else connectedComputers[i].connectionStatus = "disconnected";
+          connectedComputers[i].pingRate = "1ms";
+        } else {
+          connectedComputers[i].connectionStatus = "disconnected";
+          connectedComputers[i].pingRate = "0ms";
+        }
       });
     }
   }, 5000);
