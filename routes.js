@@ -18,6 +18,9 @@ import {
   ShutDownApplication,
   UploadTestResult,
   CentralServerMiddleWare,
+  DownloadQuestions,
+  FetchQuestions,
+  DownloadCandidates,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -39,11 +42,13 @@ router
   .get("/viewProgress", ViewProgress)
   .get("/serverConnected", isConnectedToServer)
   .post("/makeBackup", makeBackup)
+  .post("/downloadQuestions", DownloadQuestions)
+  .get("/getQuestions", FetchQuestions)
   .post("/connectionStatus", connectionStatus)
   .get("/examinationStatus", GetExaminationStatus)
   .post("/applicationClosed", ApplicationClosed)
   .post("/shutDownApplication", ShutDownApplication)
-
+  .post("/downloadCandidates", DownloadCandidates)
   .get("/fetchTestResult", UploadTestResult);
 
 export default router;

@@ -9,6 +9,24 @@ let networkedComputers = [];
 
 let networkTest = { isActive: false, duration: 0 };
 
+let downloadedQuestions = [];
+
+let downloadedCandidates = [];
+
+export const DownloadCandidates = (req, res) => {
+  downloadedCandidates = req.body.candidates;
+  res.json({ message: "Candidates Downloaded" });
+};
+
+export const DownloadQuestions = (req, res) => {
+  downloadedQuestions = req.body;
+  res.json({ message: "Questions Downloaded" });
+};
+
+export const FetchQuestions = (req, res) => {
+  res.json({ questions: downloadedQuestions });
+};
+
 export const ConnectToCentralServer = (req, res) => {
   centerDetails = req.body;
   res
