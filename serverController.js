@@ -26,7 +26,7 @@ export const CandidateLogin = (req, res) => {
   const { registrationNumber } = req.body;
 
   const candidate = downloadedCandidates.find(
-    (d) => d.registrationNumber === registrationNumber
+    (d) => d.registrationNumber === registrationNumber.toLowerCase()
   );
 
   if (candidate) {
