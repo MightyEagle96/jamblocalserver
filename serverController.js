@@ -18,6 +18,22 @@ export const DownloadCandidates = (req, res) => {
   res.json({ message: "Candidates Downloaded" });
 };
 
+export const ViewCandidates = (req, res) => {
+  res.json({ downloadedCandidates });
+};
+
+export const CandidateLogin = (req, res) => {
+  const { registrationNumber } = req.body;
+
+  const candidate = downloadedCandidates.find(
+    (d) => d.registrationNumber === registrationNumber
+  );
+
+  if (candidate) {
+    res.json({ message: "Logged In", candidate });
+  } else res.status(401).json({ message: "Candidate not found" });
+};
+
 export const DownloadQuestions = (req, res) => {
   downloadedQuestions = req.body;
   res.json({ message: "Questions Downloaded" });

@@ -21,6 +21,8 @@ import {
   DownloadQuestions,
   FetchQuestions,
   DownloadCandidates,
+  ViewCandidates,
+  CandidateLogin,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -49,6 +51,8 @@ router
   .post("/applicationClosed", ApplicationClosed)
   .post("/shutDownApplication", ShutDownApplication)
   .post("/downloadCandidates", DownloadCandidates)
-  .get("/fetchTestResult", UploadTestResult);
+  .get("/getCandidates", ViewCandidates)
+  .get("/fetchTestResult", UploadTestResult)
+  .post("/candidateLogin", CandidateLogin);
 
 export default router;
