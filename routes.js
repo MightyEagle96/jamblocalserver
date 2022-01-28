@@ -23,6 +23,8 @@ import {
   DownloadCandidates,
   ViewCandidates,
   CandidateLogin,
+  SaveCandidatesProgress,
+  ViewCandidateProgress,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -45,6 +47,7 @@ router
   .get("/serverConnected", isConnectedToServer)
   .post("/makeBackup", makeBackup)
   .post("/downloadQuestions", DownloadQuestions)
+
   .get("/getQuestions", FetchQuestions)
   .post("/connectionStatus", connectionStatus)
   .get("/examinationStatus", GetExaminationStatus)
@@ -53,6 +56,8 @@ router
   .post("/downloadCandidates", DownloadCandidates)
   .get("/getCandidates", ViewCandidates)
   .get("/fetchTestResult", UploadTestResult)
-  .post("/candidateLogin", CandidateLogin);
+  .post("/candidateLogin", CandidateLogin)
+  .post("/saveCandidateProgress", SaveCandidatesProgress)
+  .get("/getCandidatesProgress", ViewCandidateProgress);
 
 export default router;

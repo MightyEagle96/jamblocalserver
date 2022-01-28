@@ -13,6 +13,62 @@ let downloadedQuestions = [];
 
 let downloadedCandidates = [];
 
+let savedProgress = [];
+
+let loggedInCandidates = [];
+
+export const SaveCandidatesProgress = (req, res) => {
+  // savedProgress.findIndex((c=>c.cand))
+
+  const index = savedProgress.findIndex(
+    (c) => c.candidateData._id === req.body.candidateData._id
+  );
+
+  if (index >= 0) {
+    savedProgress[index] = req.body;
+  } else {
+    savedProgress.push(req.body);
+  }
+
+  res.json({ message: "Saved" });
+};
+
+export const ViewCandidateProgress = (req, res) => {
+  //structure this data for proper presentation
+
+  res.json({ savedProgress });
+};
+
+// export const ViewStructured = (req, res) => {
+//   let structuredData = [];
+
+//   for (let i = 0; i < savedProgress.length; i++) {
+//     const data = {};
+
+//     const { candidateData } = savedProgress[i];
+
+//     const { subjectCombinations } = candidateData;
+
+//     const { candidateAnswers } = savedProgress[i];
+
+//     //loop through the candidate answers
+//     for (let j = 0; j < candidateAnswers.length; j++) {
+//       for (let k = 0; k < subjectCombinations.length; k++) {
+//         if (
+//           candidateAnswers[j].subject === subjectCombinations[k].subject.slug
+//         ) {
+//           data[subjectCombinations[k].subject.title] = {
+//             questionsAnswered: k++,
+//           };
+//         }
+//       }
+//     }
+//     structuredData.push(data);
+//   }
+
+//   res.json({ structuredData });
+// };
+
 export const DownloadCandidates = (req, res) => {
   downloadedCandidates = req.body.candidates;
   res.json({ message: "Candidates Downloaded" });
@@ -30,7 +86,14 @@ export const CandidateLogin = (req, res) => {
   );
 
   if (candidate) {
-    res.json({ message: "Logged In", candidate });
+    const isLoggedIn = loggedInCandidates.find((c) => c._id === candidate._id);
+
+    if (isLoggedIn) {
+      res.status(403).json({ message: "Candidate already logged in" });
+    } else {
+      loggedInCandidates.push(candidate);
+      res.json({ message: "Logged In", candidate });
+    }
   } else res.status(401).json({ message: "Candidate not found" });
 };
 

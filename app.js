@@ -6,7 +6,7 @@ import { originUrl } from "./data.js";
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(cors({ origin: originUrl, credentials: true }));
 
 if (process.env.NODE_ENV === "development") {
