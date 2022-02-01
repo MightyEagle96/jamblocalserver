@@ -25,6 +25,7 @@ import {
   CandidateLogin,
   SaveCandidatesProgress,
   ViewCandidateProgress,
+  SubmitExamination,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -58,6 +59,7 @@ router
   .get("/fetchTestResult", UploadTestResult)
   .post("/candidateLogin", CandidateLogin)
   .post("/saveCandidateProgress", SaveCandidatesProgress)
-  .get("/getCandidatesProgress", ViewCandidateProgress);
+  .get("/getCandidatesProgress", ViewCandidateProgress)
+  .post("/submitExamination", SubmitExamination);
 
 export default router;

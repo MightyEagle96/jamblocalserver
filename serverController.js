@@ -17,6 +17,27 @@ let savedProgress = [];
 
 let loggedInCandidates = [];
 
+export const SubmitExamination = (req, res) => {
+  try {
+    const index = savedProgress.findIndex(
+      (c) => c.candidateData._id === req.body.candidateData._id
+    );
+
+    if (index >= 0) {
+      savedProgress[index].hasSubmitted = req.body.hasSubmitted;
+    }
+
+    res.json({
+      message:
+        "Examination Saved and uploaded. Kindly exit the examination hall",
+    });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error Occured. Contact the administrator" });
+  }
+};
+
 export const SaveCandidatesProgress = (req, res) => {
   // savedProgress.findIndex((c=>c.cand))
 
@@ -35,39 +56,8 @@ export const SaveCandidatesProgress = (req, res) => {
 
 export const ViewCandidateProgress = (req, res) => {
   //structure this data for proper presentation
-
   res.json({ savedProgress });
 };
-
-// export const ViewStructured = (req, res) => {
-//   let structuredData = [];
-
-//   for (let i = 0; i < savedProgress.length; i++) {
-//     const data = {};
-
-//     const { candidateData } = savedProgress[i];
-
-//     const { subjectCombinations } = candidateData;
-
-//     const { candidateAnswers } = savedProgress[i];
-
-//     //loop through the candidate answers
-//     for (let j = 0; j < candidateAnswers.length; j++) {
-//       for (let k = 0; k < subjectCombinations.length; k++) {
-//         if (
-//           candidateAnswers[j].subject === subjectCombinations[k].subject.slug
-//         ) {
-//           data[subjectCombinations[k].subject.title] = {
-//             questionsAnswered: k++,
-//           };
-//         }
-//       }
-//     }
-//     structuredData.push(data);
-//   }
-
-//   res.json({ structuredData });
-// };
 
 export const DownloadCandidates = (req, res) => {
   downloadedCandidates = req.body.candidates;
