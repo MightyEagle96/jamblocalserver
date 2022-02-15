@@ -3,7 +3,7 @@ import ping from "ping";
 let connectedComputers = [];
 let centerDetails = null;
 let shutDown = false;
-let timer = 0;
+let timeLeft = 0;
 let beginExam = { mainExamination: false, networkTest: false, duration: 0 };
 let networkedComputers = [];
 
@@ -118,11 +118,26 @@ export const GetCenterDetails = (req, res) => {
 export const performNetworkTest = (req, res) => {
   networkTest.isActive = !networkTest.isActive;
   networkTest.duration = req.body.duration;
+  timeLeft = req.body.duration * 60 * 1000;
   networkTest.timeStarted = new Date().toTimeString();
   res.json({ message: "Network test started", networkTest });
   StopTheTimer();
+  UpdateTimeLeft();
 };
 
+export const GetTimeRemaining = (req, res) => {
+  res.json({ timeLeft });
+};
+
+function UpdateTimeLeft() {
+  const timerInterval = setInterval(() => {
+    timeLeft -= 1000;
+
+    if (timeLeft === 0) {
+      clearInterval(timerInterval);
+    }
+  }, 1000);
+}
 function StopTheTimer() {
   const timeBegan = new Date();
   timeBegan.setMinutes(timeBegan.getMinutes() + networkTest.duration);

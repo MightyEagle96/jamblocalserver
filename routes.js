@@ -26,6 +26,7 @@ import {
   SaveCandidatesProgress,
   ViewCandidateProgress,
   SubmitExamination,
+  GetTimeRemaining,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -48,7 +49,7 @@ router
   .get("/serverConnected", isConnectedToServer)
   .post("/makeBackup", makeBackup)
   .post("/downloadQuestions", DownloadQuestions)
-
+  .get("/getTimeLeft", GetTimeRemaining)
   .get("/getQuestions", FetchQuestions)
   .post("/connectionStatus", connectionStatus)
   .get("/examinationStatus", GetExaminationStatus)
