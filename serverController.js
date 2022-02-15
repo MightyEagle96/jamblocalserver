@@ -116,6 +116,19 @@ export const GetCenterDetails = (req, res) => {
 };
 
 export const performNetworkTest = (req, res) => {
+  if (networkedComputers.length > 0) {
+    return res.status(400).json({
+      message:
+        "A previous network test result is still saved. Please upload it or thrash it.",
+    });
+  }
+
+  if (connectedComputers.length === 0) {
+    return res.status(400).json({
+      message:
+        "No computer connected. Connect computers to the server and try again",
+    });
+  }
   networkTest.isActive = !networkTest.isActive;
   networkTest.duration = req.body.duration;
   timeLeft = req.body.duration * 60 * 1000;
@@ -125,6 +138,10 @@ export const performNetworkTest = (req, res) => {
   UpdateTimeLeft();
 };
 
+export const TrashNetworkTest = (req, res) => {
+  networkedComputers = [];
+  res.json({ message: "Examination Simulation result trashed" });
+};
 export const GetTimeRemaining = (req, res) => {
   res.json({ timeLeft });
 };

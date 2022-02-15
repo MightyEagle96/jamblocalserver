@@ -27,6 +27,7 @@ import {
   ViewCandidateProgress,
   SubmitExamination,
   GetTimeRemaining,
+  TrashNetworkTest,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -59,6 +60,7 @@ router
   .get("/getCandidates", ViewCandidates)
   .get("/fetchTestResult", UploadTestResult)
   .post("/candidateLogin", CandidateLogin)
+  .post("/trashSim", TrashNetworkTest)
   .post("/saveCandidateProgress", SaveCandidatesProgress)
   .get("/getCandidatesProgress", ViewCandidateProgress)
   .post("/submitExamination", SubmitExamination);
