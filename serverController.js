@@ -74,7 +74,7 @@ export const CandidateLogin = (req, res) => {
   const candidate = downloadedCandidates.find(
     (d) => d.registrationNumber === registrationNumber.toLowerCase()
   );
-
+  candidate.loggedInAt = Date.now();
   if (candidate) {
     const isLoggedIn = loggedInCandidates.find((c) => c._id === candidate._id);
 
@@ -87,6 +87,7 @@ export const CandidateLogin = (req, res) => {
   } else res.status(401).json({ message: "Candidate not found" });
 };
 
+export const ReadmitCandidate = async (req, res) => {};
 export const DownloadQuestions = (req, res) => {
   downloadedQuestions = req.body;
   res.json({ message: "Questions Downloaded" });
@@ -180,10 +181,12 @@ export const viewNetworkTest = (req, res) => {
 
 export const connectToServer = (req, res) => {
   //do this to prevent computers being connected when the local server is not yet connected to the main server
-
   req.body.isBackup = false;
   req.body.connectionStatus = "connected";
   req.body.appClosed = false;
+  req.body.connectedAt = Date.now();
+  req.body.lastActive = Date.now();
+  req.body.reconnectedAt = [];
 
   const index = connectedComputers.findIndex((c) => {
     return c.ipAddress == req.body.ipAddress;
@@ -191,13 +194,25 @@ export const connectToServer = (req, res) => {
 
   if (index < 0) {
     connectedComputers.push(req.body);
-  } else connectedComputers[index] = req.body;
+  } else {
+    // connectedComputers[index] = req.body;
+    connectedComputers[index].reconnectedAt.push({
+      connectionLost: connectedComputers[index].lastActive,
+      connectionRestored: Date.now(),
+    });
+  }
   res.json({ message: "Connected" });
 };
 
 export const connectedDevices = (req, res) => {
+  const percentage = Math.floor(
+    (connectedComputers.length /
+      (centerDetails.computers + centerDetails.backupComputers)) *
+      100
+  );
   res.json({
     count: connectedComputers.length,
+    percentage,
     connectedComputers: connectedComputers.sort((a, b) => {
       let fa = a.ipAddress,
         fb = b.ipAddress;
@@ -219,17 +234,6 @@ export const makeBackup = (req, res) => {
 
     res.json({ message: "Process successful" });
   } else res.json({ message: "something occured" });
-};
-
-export const connectionStatus = (req, res) => {
-  try {
-    const index = connectedComputers.findIndex(
-      (d) => d.ipAddress === req.body.ipAddress
-    );
-    connectedComputers[index].connectionStatus = "connected";
-  } catch (error) {}
-
-  res.json({ message: "running" });
 };
 
 function GetConnectionStatus() {
@@ -321,6 +325,13 @@ export const ShutDownApplication = (req, res) => {
 };
 
 export const isConnectedToServer = (req, res) => {
+  try {
+    const index = connectedComputers.findIndex(
+      (d) => d.ipAddress === req.body.ipAddress
+    );
+    connectedComputers[index].lastActive = Date.now();
+    connectedComputers[index].connectionStatus = "connected";
+  } catch (error) {}
   res.json({ connected: true, shutDown });
 };
 

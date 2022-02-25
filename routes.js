@@ -3,7 +3,6 @@ import express from "express";
 import {
   ApplicationClosed,
   connectedDevices,
-  connectionStatus,
   ConnectToCentralServer,
   connectToServer,
   GetCenterDetails,
@@ -47,12 +46,12 @@ router
   .post("/getMyTestResult", GetMyReport)
   .post("/packetsCount", PacketsCount)
   .get("/viewProgress", ViewProgress)
-  .get("/serverConnected", isConnectedToServer)
+  .post("/serverConnected", isConnectedToServer)
   .post("/makeBackup", makeBackup)
   .post("/downloadQuestions", DownloadQuestions)
   .get("/getTimeLeft", GetTimeRemaining)
   .get("/getQuestions", FetchQuestions)
-  .post("/connectionStatus", connectionStatus)
+
   .get("/examinationStatus", GetExaminationStatus)
   .post("/applicationClosed", ApplicationClosed)
   .post("/shutDownApplication", ShutDownApplication)
