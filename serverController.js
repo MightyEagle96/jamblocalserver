@@ -71,23 +71,51 @@ export const ViewCandidates = (req, res) => {
 export const CandidateLogin = (req, res) => {
   const { registrationNumber } = req.body;
 
-  const candidate = downloadedCandidates.find(
-    (d) => d.registrationNumber === registrationNumber.toLowerCase()
-  );
-  candidate.loggedInAt = Date.now();
-  if (candidate) {
-    const isLoggedIn = loggedInCandidates.find((c) => c._id === candidate._id);
+  if (downloadedQuestions.length === 0) {
+    res.status(400).json({
+      message: "No Questions downloaded yet. Contact the adminstrator",
+    });
+  } else {
+    const candidate = downloadedCandidates.find(
+      (d) => d.registrationNumber === registrationNumber.toLowerCase()
+    );
 
-    if (isLoggedIn) {
-      res.status(403).json({ message: "Candidate already logged in" });
-    } else {
-      loggedInCandidates.push(candidate);
-      res.json({ message: "Logged In", candidate });
-    }
-  } else res.status(401).json({ message: "Candidate not found" });
+    if (candidate) {
+      const isLoggedIn = loggedInCandidates.find(
+        (c) => c._id === candidate._id
+      );
+
+      if (isLoggedIn && isLoggedIn.readmit === false) {
+        res.status(403).json({ message: "Candidate already logged in" });
+      } else {
+        candidate.loggedInAt = Date.now();
+        candidate.readmit = false;
+        candidate.reloggedInAt = [];
+        loggedInCandidates.push(candidate);
+        res.json({ message: "Logged In", candidate });
+      }
+    } else res.status(401).json({ message: "Candidate not found" });
+  }
 };
 
-export const ReadmitCandidate = async (req, res) => {};
+export const ReadmitCandidate = async (req, res) => {
+  const index = loggedInCandidates.findIndex(
+    (c) => c.registrationNumber === req.body.registrationNumber
+  );
+
+  if (index >= 0) {
+    loggedInCandidates[index].readmit = true;
+
+    loggedInCandidates[index].reloggedInAt.push(Date.now());
+    res.json({
+      message: `Candidate ${req.body.registrationNumber} is now readmitted`,
+    });
+  } else {
+    res
+      .status(400)
+      .json({ message: "No Candidate found with that registration number" });
+  }
+};
 export const DownloadQuestions = (req, res) => {
   downloadedQuestions = req.body;
   res.json({ message: "Questions Downloaded" });
