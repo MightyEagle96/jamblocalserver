@@ -38,9 +38,19 @@ export const SubmitExamination = (req, res) => {
   }
 };
 
-export const SaveCandidatesProgress = (req, res) => {
-  // savedProgress.findIndex((c=>c.cand))
+export const GetCandidateProgress = (req, res) => {
+  const index = savedProgress.findIndex(
+    (c) => c.candidateData._id === req.params.id
+  );
 
+  if (index >= 0) {
+    let progress = {};
+    progress = savedProgress[index];
+    res.json({ progress });
+  } else res.json({});
+};
+
+export const SaveCandidatesProgress = (req, res) => {
   const index = savedProgress.findIndex(
     (c) => c.candidateData._id === req.body.candidateData._id
   );
@@ -208,13 +218,13 @@ export const viewNetworkTest = (req, res) => {
 };
 
 export const connectToServer = (req, res) => {
-  //do this to prevent computers being connected when the local server is not yet connected to the main server
   req.body.isBackup = false;
   req.body.connectionStatus = "connected";
   req.body.appClosed = false;
   req.body.connectedAt = Date.now();
   req.body.lastActive = Date.now();
   req.body.reconnectedAt = [];
+  req.body.ipAddress.trim();
 
   const index = connectedComputers.findIndex((c) => {
     return c.ipAddress == req.body.ipAddress;
