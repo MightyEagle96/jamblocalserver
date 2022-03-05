@@ -1,4 +1,6 @@
 import ping from "ping";
+import { CreateBackupFile, path } from "./data.js";
+import fs from "fs";
 
 let connectedComputers = [];
 let centerDetails = null;
@@ -17,6 +19,17 @@ let savedProgress = [];
 
 let loggedInCandidates = [];
 
+CreateBackupFile(savedProgress);
+
+export const RestoreBackup = (req, res) => {
+  const readStream = fs.createReadStream(path);
+
+  readStream.on("data", (data) => {
+    savedProgress = JSON.parse(data);
+  });
+
+  res.json({ message: "Saved progress, restored" });
+};
 export const SubmitExamination = (req, res) => {
   try {
     const index = savedProgress.findIndex(

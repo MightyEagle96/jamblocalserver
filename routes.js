@@ -29,6 +29,7 @@ import {
   TrashNetworkTest,
   ReadmitCandidate,
   GetCandidateProgress,
+  RestoreBackup,
 } from "./serverController.js";
 
 const router = express.Router();
@@ -65,6 +66,7 @@ router
   .post("/trashSim", TrashNetworkTest)
   .post("/saveCandidateProgress", SaveCandidatesProgress)
   .get("/getCandidatesProgress", ViewCandidateProgress)
-  .post("/submitExamination", SubmitExamination);
+  .post("/submitExamination", SubmitExamination)
+  .get("/restoreBackup", RestoreBackup);
 
 export default router;
