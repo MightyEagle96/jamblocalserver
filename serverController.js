@@ -19,8 +19,6 @@ let savedProgress = [];
 
 let loggedInCandidates = [];
 
-CreateBackupFile(savedProgress);
-
 export const RestoreBackup = (req, res) => {
   const readStream = fs.createReadStream(path);
 
@@ -75,6 +73,7 @@ export const SaveCandidatesProgress = (req, res) => {
   }
 
   res.json({ message: "Saved" });
+  CreateBackupFile(savedProgress);
 };
 
 export const ViewCandidateProgress = (req, res) => {

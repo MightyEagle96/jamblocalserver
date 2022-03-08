@@ -6,15 +6,13 @@ export const originUrl = "http://localhost:3000";
 
 export const path = "./backupFile.json";
 export const CreateBackupFile = (array) => {
-  setInterval(() => {
-    if (array.length > 0) {
-      fs.writeFile(path, JSON.stringify(array), (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-  }, 10000);
+  if (array.length > 0) {
+    fs.writeFile(path, JSON.stringify(array), (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
 };
 
 export const RestoreBackupFile = () => {
